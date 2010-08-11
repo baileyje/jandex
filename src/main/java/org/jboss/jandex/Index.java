@@ -40,6 +40,9 @@ import java.util.Map;
  *
  */
 public final class Index {
+    private static final List<AnnotationTarget> EMPTY_ANNOTATION_TARGETS = Collections.emptyList();
+    private static final List<ClassInfo> EMPTY_CLASS_INFO = Collections.emptyList();
+
     final Map<DotName, List<AnnotationTarget>> annotations;
     final Map<DotName, List<ClassInfo>> subclasses;
     final Map<DotName, ClassInfo> classes;
@@ -59,7 +62,11 @@ public final class Index {
      * @return a list of annotation targets
      */
     public List<AnnotationTarget> getAnnotationTargets(DotName annotationName) {
-        return Collections.unmodifiableList(annotations.get(annotationName));
+        final List<AnnotationTarget> annotationTargets = annotations.get(annotationName);
+        if(annotationTargets == null) {
+            return EMPTY_ANNOTATION_TARGETS;
+        }
+        return Collections.unmodifiableList(annotationTargets);
     }
 
     /**
@@ -74,7 +81,11 @@ public final class Index {
      * @return all known subclasses of className
      */
     public List<ClassInfo> getKnownSubclasses(DotName className) {
-        return Collections.unmodifiableList(subclasses.get(className));
+        final List<ClassInfo> classInfo = subclasses.get(className);
+        if(classInfo == null) {
+            return EMPTY_CLASS_INFO;
+        }
+        return Collections.unmodifiableList(classInfo);
     }
 
     /**
